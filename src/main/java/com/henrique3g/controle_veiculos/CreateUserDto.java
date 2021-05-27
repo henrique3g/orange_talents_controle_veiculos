@@ -24,6 +24,11 @@ public class CreateUserDto {
     @DateTimeFormat(iso = ISO.DATE)
     private LocalDate birthdate;
 
+    public User toUser() {
+        return new User(getName(), getEmail(), getCpf(), getBirthdate());
+    }
+
+    // getters and setters
     public String getEmail() {
         return email;
     }

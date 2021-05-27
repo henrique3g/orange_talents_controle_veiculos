@@ -1,4 +1,4 @@
-package com.henrique3g.controle_veiculos;
+package com.henrique3g.controle_veiculos.user;
 
 import java.time.LocalDate;
 import javax.persistence.Entity;

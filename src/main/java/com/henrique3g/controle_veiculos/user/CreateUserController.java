@@ -1,4 +1,4 @@
-package com.henrique3g.controle_veiculos;
+package com.henrique3g.controle_veiculos.user;
 
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

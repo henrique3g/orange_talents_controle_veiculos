@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class CreateUserController {
@@ -17,25 +16,14 @@ public class CreateUserController {
 
     @PostMapping("/users")
     @Transactional
-    public ResponseEntity<Void> createUser(@RequestBody @Valid CreateUserDto userData) {
+    public ResponseEntity<?> createUser(@RequestBody @Valid CreateUserDto userData) {
         boolean hasUserWithSameCpf = userRepository.findByCpf(userData.getCpf()).isPresent();
         boolean hasUserWithSameEmail = userRepository.findByEmail(userData.getEmail()).isPresent();
         if (hasUserWithSameCpf || hasUserWithSameEmail) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    getErrorMessage(hasUserWithSameCpf, hasUserWithSameEmail));
+            return ResponseEntity.badRequest()
+                    .body(new UserAlreadyExists(hasUserWithSameCpf, hasUserWithSameEmail));
         }
         userRepository.save(userData.toUser());
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    private String getErrorMessage(boolean cpf, boolean email) {
-        String message = "User already exists with the";
-        if (cpf && !email) {
-            return message.concat(" cpf");
-        }
-        if (!cpf && email) {
-            return message.concat(" email");
-        }
-        return  message.concat(" cpf and the email");
     }
 }

@@ -24,7 +24,7 @@ public class UserVehiclesView {
         this.setVehicles(user.getVehicles());
     }
 
-    private class VehicleView {
+    protected class VehicleView {
         private Long id;
         private String brand;
         private String model;

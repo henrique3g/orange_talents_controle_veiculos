@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.henrique3g.controle_veiculos.user.User;
 
 @Entity
@@ -42,12 +41,10 @@ public class Vehicle {
         this.user = user;
     }
 
-    @JsonGetter("rotation_day")
     public DayOfWeek getRotationDay() {
         return verifyRotationRule(year);
     }
 
-    @JsonGetter("is_rotation_day")
     public boolean isRotationDay() {
         return LocalDate.now().getDayOfWeek().compareTo(getRotationDay()) == 0;
     }

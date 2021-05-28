@@ -1,5 +1,6 @@
 package com.henrique3g.controle_veiculos.user;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ public class CreateUserController {
     private UserRepository userRepository;
 
     @PostMapping("/users")
+    @Transactional
     public ResponseEntity<Void> createUser(@RequestBody @Valid CreateUserDto userData) {
         boolean hasUserWithSameCpf = userRepository.findByCpf(userData.getCpf()).isPresent();
         boolean hasUserWithSameEmail = userRepository.findByEmail(userData.getEmail()).isPresent();

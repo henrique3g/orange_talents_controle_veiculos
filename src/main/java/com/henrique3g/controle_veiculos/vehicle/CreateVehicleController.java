@@ -1,5 +1,6 @@
 package com.henrique3g.controle_veiculos.vehicle;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import com.henrique3g.controle_veiculos.user.User;
 import com.henrique3g.controle_veiculos.user.UserRepository;
@@ -23,6 +24,7 @@ public class CreateVehicleController {
         private GetVehiclePrice getVehiclePrice;
 
         @PostMapping("/vehicles")
+        @Transactional
         public ResponseEntity<?> createVehicle(@RequestBody @Valid CreateVehicleDto vehicleData)
                         throws Exception {
                 User user = userRepository.findById(vehicleData.getUserId())

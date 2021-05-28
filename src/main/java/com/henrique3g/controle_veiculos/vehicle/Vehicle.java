@@ -6,7 +6,11 @@ import java.time.Year;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.henrique3g.controle_veiculos.user.User;
 
 @Entity
 public class Vehicle {
@@ -22,14 +26,20 @@ public class Vehicle {
 
     private Double price;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @NotNull
+    private User user;
+
     @Deprecated
     public Vehicle() {}
 
-    public Vehicle(String brand, String model, Year year, Double price) {
+    public Vehicle(String brand, String model, Year year, Double price, User user) {
         this.brand = brand;
         this.model = model;
         this.year = year;
         this.price = price;
+        this.user = user;
     }
 
     @JsonGetter("rotation_day")
@@ -69,39 +79,23 @@ public class Vehicle {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getBrand() {
         return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
     }
 
     public String getModel() {
         return model;
     }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
-
     public Year getYear() {
         return year;
-    }
-
-    public void setYear(Year year) {
-        this.year = year;
     }
 
     public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public User getUser() {
+        return user;
     }
 }

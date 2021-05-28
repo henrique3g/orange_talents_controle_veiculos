@@ -25,14 +25,14 @@ public class CreateVehicleController {
 
         @PostMapping("/vehicles")
         @Transactional
-        public ResponseEntity<?> createVehicle(@RequestBody @Valid CreateVehicleDto vehicleData)
-                        throws Exception {
+        public ResponseEntity<?> createVehicle(@RequestBody @Valid CreateVehicleDto vehicleData) {
                 User user = userRepository.findByCpf(vehicleData.getUserCpf())
                                 .orElseThrow(() -> toBadRequest("User not found"));
                 Double price = getVehiclePrice
                                 .execute(vehicleData.getBrand(), vehicleData.getModel(),
                                                 vehicleData.getYear())
-                                .orElseThrow(() -> toBadRequest("Vehicle not found"));
+                                .orElseThrow(error -> toBadRequest(error));
+
                 System.out.println(price);
                 Vehicle vehicle = vehicleData.toVehicle(price, user);
                 vehicleRepository.save(vehicle);

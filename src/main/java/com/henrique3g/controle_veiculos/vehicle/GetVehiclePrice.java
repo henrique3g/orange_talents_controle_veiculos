@@ -2,6 +2,7 @@ package com.henrique3g.controle_veiculos.vehicle;
 
 import java.time.Year;
 import java.util.Optional;
+import com.henrique3g.controle_veiculos.Result;
 import com.henrique3g.controle_veiculos.vehicle.VehicleApiClient.ResponseVehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,22 +12,22 @@ public class GetVehiclePrice {
     @Autowired
     private VehicleApiClient vehicleClient;
 
-    public Optional<Double> execute(String brand, String model, Year year) {
+    public Result<Double> execute(String brand, String model, Year year) {
         Optional<Integer> brandId = getBrandId(brand);
         if (!brandId.isPresent()) {
-            return Optional.empty();
+            return Result.fail("Brand not found");
         }
         Optional<Integer> modelId = getModelId(brandId.get(), model);
         if (!modelId.isPresent()) {
-            return Optional.empty();
+            return Result.fail("Model not found");
         }
         Optional<String> yearId = getYearId(brandId.get(), modelId.get(), year);
         if (!yearId.isPresent()) {
-            return Optional.empty();
+            return Result.fail("Model with the year not found");
         }
         ResponseVehicle vehicle =
                 vehicleClient.getVehicle(brandId.get(), modelId.get(), yearId.get());
-        return Optional.of(vehicle.getPrice());
+        return Result.ok(vehicle.getPrice());
     }
 
     private Optional<String> getYearId(Integer brandId, Integer modelId, Year year) {

@@ -1,9 +1,12 @@
 package com.henrique3g.controle_veiculos.vehicle;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.Year;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonGetter;
 
 @Entity
 public class Vehicle {
@@ -27,6 +30,39 @@ public class Vehicle {
         this.model = model;
         this.year = year;
         this.price = price;
+    }
+
+    @JsonGetter("rotation_day")
+    public DayOfWeek getRotationDay() {
+        return verifyRotationRule(year);
+    }
+
+    @JsonGetter("is_rotation_day")
+    public boolean isRotationDay() {
+        return LocalDate.now().getDayOfWeek().compareTo(getRotationDay()) == 0;
+    }
+
+    private DayOfWeek verifyRotationRule(Year vehicleYear) {
+        String vehicleYearString = vehicleYear.toString();
+        char lastNumberOfYear = vehicleYearString.charAt(vehicleYearString.length() - 1);
+        switch (lastNumberOfYear) {
+            case '0':
+            case '1':
+                return DayOfWeek.MONDAY;
+            case '2':
+            case '3':
+                return DayOfWeek.TUESDAY;
+            case '4':
+            case '5':
+                return DayOfWeek.WEDNESDAY;
+            case '6':
+            case '7':
+                return DayOfWeek.THURSDAY;
+            case '8':
+            case '9':
+            default:
+                return DayOfWeek.FRIDAY;
+        }
     }
 
     public Long getId() {

@@ -23,7 +23,7 @@ public class GetVehiclePrice {
         }
         Optional<String> yearId = getYearId(brandId.get(), modelId.get(), year);
         if (!yearId.isPresent()) {
-            return Result.fail("Model with the year not found");
+            return Result.fail("Not found model with the year");
         }
         ResponseVehicle vehicle =
                 vehicleClient.getVehicle(brandId.get(), modelId.get(), yearId.get());

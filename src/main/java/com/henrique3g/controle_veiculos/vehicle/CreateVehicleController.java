@@ -27,19 +27,19 @@ public class CreateVehicleController {
         @Transactional
         public ResponseEntity<?> createVehicle(@RequestBody @Valid CreateVehicleDto vehicleData)
                         throws Exception {
-                User user = userRepository.findById(vehicleData.getUserId())
-                                .orElseThrow(() -> toResponse("User not found"));
+                User user = userRepository.findByCpf(vehicleData.getUserCpf())
+                                .orElseThrow(() -> toBadRequest("User not found"));
                 Double price = getVehiclePrice
                                 .execute(vehicleData.getBrand(), vehicleData.getModel(),
                                                 vehicleData.getYear())
-                                .orElseThrow(() -> toResponse("Vehicle not found"));
+                                .orElseThrow(() -> toBadRequest("Vehicle not found"));
                 System.out.println(price);
                 Vehicle vehicle = vehicleData.toVehicle(price, user);
                 vehicleRepository.save(vehicle);
                 return new ResponseEntity<>(HttpStatus.CREATED);
         }
 
-        private ResponseStatusException toResponse(String message) {
+        private ResponseStatusException toBadRequest(String message) {
                 return new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
 }

@@ -4,10 +4,11 @@ import java.time.Year;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import com.henrique3g.controle_veiculos.user.User;
+import org.hibernate.validator.constraints.br.CPF;
 
 public class CreateVehicleDto {
-    @NotNull
-    private Long userId;
+    @CPF
+    private String userCpf;
 
     @NotBlank
     private String brand;
@@ -22,8 +23,8 @@ public class CreateVehicleDto {
         return new Vehicle(getBrand(), getModel(), getYear(), price, user);
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUserCpf() {
+        return userCpf;
     }
 
     public String getModel() {

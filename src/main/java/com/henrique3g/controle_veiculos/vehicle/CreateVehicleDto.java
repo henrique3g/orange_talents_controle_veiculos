@@ -3,6 +3,7 @@ package com.henrique3g.controle_veiculos.vehicle;
 import java.time.Year;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import com.henrique3g.controle_veiculos.user.User;
 
 public class CreateVehicleDto {
     @NotNull
@@ -17,8 +18,8 @@ public class CreateVehicleDto {
     @NotNull
     private Year year;
 
-    public Vehicle toVehicle(Double price) {
-        return new Vehicle(getBrand(), getModel(), getYear(), price);
+    public Vehicle toVehicle(Double price, User user) {
+        return new Vehicle(getBrand(), getModel(), getYear(), price, user);
     }
 
     public Long getUserId() {

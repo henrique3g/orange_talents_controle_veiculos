@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  database:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: controle_veiculos
+    restart: unless-stopped
+
+  myAdmin:
+    image: phpmyadmin:latest
+    environment:
+      PMA_HOST: database
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - 8081:80
+    depends_on:
+      - database
+    restart: unless-stopped
